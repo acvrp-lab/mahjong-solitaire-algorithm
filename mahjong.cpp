@@ -77,6 +77,27 @@ void mjGame::parse(const std::string& str){
             return theBoard[(rows *lay+row ) * columns + col];
         };
         
+        // validate game data
+        {
+            if (blocks.size() % 2 != 0) {
+                printf("bad game data: odd number of blocks.\n");
+            }
+            if (blocks.size() < 2) {
+                printf("bad game data: too few blocks.\n");
+            }
+            for (auto blk : blocks) {
+                for (int x = -1; x <= 1; ++x) {
+                    for (int y = -1; y <= 1; ++y) {
+                        if (x==0 && y==0)continue;
+                        auto foo = getBlock(blk->layer, blk->row + x, blk->column + y);
+                        if (foo != nullptr) {
+                            printf("bad game data: overlapping blocks.\n");
+                        }
+                    }
+                }
+            }
+        }
+        
         for (auto blk : blocks) {
             for (int i = -1; i <= 1; ++i) {
                 auto foo = getBlock(blk->layer, blk->row + i, blk->column + 2);
@@ -201,6 +222,9 @@ void mjGame::shuffle()
             sequence[i * 2]->tileIndex = backup[i];
             sequence[i * 2 + 1]->tileIndex = backup[i];
         }
+    }
+    else {
+        printf("bad game data: no solution.\n");
     }
 }
 

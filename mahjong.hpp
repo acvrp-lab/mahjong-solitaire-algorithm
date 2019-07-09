@@ -33,13 +33,13 @@ struct mjBlock {
 
 class mjGame {
     
-    std::set<mjBlock*> blocks;
 
     void attachBlock(mjBlock*);
     void detachBlock(mjBlock*);
     
 public:
     ~mjGame();
+    std::set<mjBlock*> blocks;
 
     void parse(const std::string& str);
     
